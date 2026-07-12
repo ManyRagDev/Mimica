@@ -3,7 +3,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import cors from "cors";
 import * as pinoHttpModule from "pino-http";
 import router from "./routes/index.js";
-import { logger } from "./lib/logger";
+import { logger } from "./lib/logger.js";
 
 type PinoHttpFactory = (options: {
   logger: typeof logger;
