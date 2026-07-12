@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "npm run dev --workspace=artifacts/mockup-sandbox",
-    "build": "npm run typecheck && npm run build --workspaces --if-present && mkdir -p dist && cp -r artifacts/mockup-sandbox/dist/* dist/",
+    "build": "npm run typecheck && npm run build --workspaces --if-present && mkdir -p dist && cp -r artifacts/mockup-sandbox/dist/* dist/ && mkdir -p artifacts/api-server/dist/public && cp -r artifacts/mockup-sandbox/dist/* artifacts/api-server/dist/public/",
     "typecheck:libs": "tsc --build",
     "typecheck": "npm run typecheck:libs && npm run typecheck --workspaces --if-present"
   },

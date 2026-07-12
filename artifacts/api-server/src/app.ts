@@ -1,5 +1,7 @@
 import express, { type Express, type RequestHandler } from "express";
 import type { IncomingMessage, ServerResponse } from "node:http";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import cors from "cors";
 import * as pinoHttpModule from "pino-http";
 import router from "./routes/index.js";
@@ -44,5 +46,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const frontendDist = path.resolve(__dirname, "public");
+
+app.use(express.static(frontendDist));
+
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(frontendDist, "index.html"));
+});
 
 export default app;
