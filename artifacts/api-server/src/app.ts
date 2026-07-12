@@ -52,8 +52,10 @@ const frontendDist = path.resolve(__dirname, "public");
 
 app.use(express.static(frontendDist));
 
-app.get("*", (_req, res) => {
-  res.sendFile(path.join(frontendDist, "index.html"));
+app.use((_req, res, next) => {
+  res.sendFile(path.join(frontendDist, "index.html"), (err: NodeJS.ErrnoException) => {
+    if (err) next();
+  });
 });
 
 export default app;
