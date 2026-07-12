@@ -13,9 +13,10 @@ type PinoHttpFactory = (options: {
   };
 }) => RequestHandler;
 
-const pinoHttp = (
-  "default" in pinoHttpModule ? pinoHttpModule.default : pinoHttpModule
-) as PinoHttpFactory;
+const pinoHttpImport = pinoHttpModule as unknown as PinoHttpFactory & {
+  default?: PinoHttpFactory;
+};
+const pinoHttp = pinoHttpImport.default ?? pinoHttpImport;
 
 const app: Express = express();
 
