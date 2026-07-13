@@ -151,7 +151,7 @@ export function GameScreen({ onNavigate }: GameScreenProps) {
         </div>
 
         <span className="font-black text-sm tracking-widest text-neutral-950 uppercase">
-          MÍMICA PARTY
+          MOSCAPULA MÍMICA
         </span>
 
         <button
@@ -644,7 +644,7 @@ export function GameScreen({ onNavigate }: GameScreenProps) {
 
       {/* Decorative safety bottom footer pad */}
       <footer className="py-4 text-center text-xs font-bold text-neutral-400 select-none">
-        Mímica Party Web Edition
+        MoscaPula Mímica Web Edition
       </footer>
 
       {/* Custom Quit Confirmation Modal Overlay */}

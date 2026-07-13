@@ -39,16 +39,19 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
           </div>
 
           {/* Title Hero Block */}
-          <div className="flex gap-4">
-            {/* Visual accent vertical bar */}
-            <div className="w-3.5 h-28 bg-amber-500 rounded border-2 border-neutral-950 shrink-0 shadow-[2px_2px_0_0_#000]" />
-            <div className="flex flex-col text-left">
-              <h1 className="text-6xl font-black text-neutral-950 tracking-tighter leading-[0.9]">
-                MÍMICA
-              </h1>
-              <h1 className="text-6xl font-black text-violet-600 tracking-tighter leading-[0.9]">
-                PARTY
-              </h1>
+          <div className="flex flex-col gap-6">
+            <img src="/logo.png" alt="MoscaPula Mímica Logo" className="w-24 h-24 rounded-2xl border-4 border-neutral-950 shadow-[4px_4px_0_0_#000]" />
+            <div className="flex gap-4">
+              {/* Visual accent vertical bar */}
+              <div className="w-3.5 h-auto bg-amber-500 rounded border-2 border-neutral-950 shrink-0 shadow-[2px_2px_0_0_#000]" />
+              <div className="flex flex-col gap-1 text-left">
+                <h1 className="text-4xl sm:text-5xl font-black text-neutral-950 tracking-tighter leading-[0.9]">
+                  MOSCAPULA
+                </h1>
+                <h1 className="text-6xl sm:text-7xl font-black text-violet-600 tracking-tighter leading-[0.9]">
+                  MÍMICA
+                </h1>
+              </div>
             </div>
           </div>
 

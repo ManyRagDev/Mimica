@@ -8,7 +8,7 @@ interface SetupScreenProps {
 }
 
 const CATEGORY_KEYS = Object.keys(CATEGORIES) as CategoryKey[];
-const TEAM_COLORS = ['#6D28D9', '#D97706'];
+const TEAM_COLORS = ['#6D28D9', '#D97706', '#059669', '#DB2777', '#2563EB', '#DC2626'];
 
 const categoryIcons: Record<string, any> = {
   Zap,
@@ -30,20 +30,14 @@ export function SetupScreen({ onNavigate }: SetupScreenProps) {
       id: 't1',
       name: 'Time 1',
       color: TEAM_COLORS[0],
-      players: [
-        { id: 'p1', name: 'Alice' },
-        { id: 'p2', name: 'Bob' },
-      ],
+      players: [],
       score: 0,
     },
     {
       id: 't2',
       name: 'Time 2',
       color: TEAM_COLORS[1],
-      players: [
-        { id: 'p3', name: 'Carlos' },
-        { id: 'p4', name: 'Daniela' },
-      ],
+      players: [],
       score: 0,
     },
   ]);
@@ -157,76 +151,109 @@ export function SetupScreen({ onNavigate }: SetupScreenProps) {
       <main className="flex-1 overflow-y-auto max-w-lg w-full mx-auto p-4 pb-28 space-y-6">
         
         {/* TAB 1: EQUIPES */}
-        {activeTab === 'equipes' &&
-          teams.map((team, teamIdx) => (
-            <div key={team.id} className="relative w-full">
-              {/* Outer Shadow */}
-              <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-neutral-950 rounded" />
-              {/* Card Base */}
-              <div className="relative bg-white border-4 border-neutral-950 rounded overflow-hidden">
-                {/* Team top color strip */}
-                <div
-                  className="flex items-center justify-between px-4 py-3 border-b-4 border-neutral-950 text-white"
-                  style={{ backgroundColor: team.color }}
-                >
-                  <span className="font-black text-lg tracking-widest uppercase">{team.name}</span>
-                  <span className="font-black text-xs uppercase opacity-90">
-                    {team.players.length} JOGADOR(ES)
-                  </span>
-                </div>
+        {activeTab === 'equipes' && (
+          <>
+            {teams.map((team, teamIdx) => (
+              <div key={team.id} className="relative w-full">
+                {/* Outer Shadow */}
+                <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-neutral-950 rounded" />
+                {/* Card Base */}
+                <div className="relative bg-white border-4 border-neutral-950 rounded overflow-hidden">
+                  {/* Team top color strip */}
+                  <div
+                    className="flex items-center justify-between px-4 py-3 border-b-4 border-neutral-950 text-white"
+                    style={{ backgroundColor: team.color }}
+                  >
+                    <span className="font-black text-lg tracking-widest uppercase">{team.name}</span>
+                    <span className="font-black text-xs uppercase opacity-90">
+                      {team.players.length} JOGADOR(ES)
+                    </span>
+                  </div>
 
-                {/* Player List */}
-                <div className="divide-y-2 divide-neutral-100 bg-white">
-                  {team.players.map((player) => (
-                    <div key={player.id} className="flex items-center justify-between px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: team.color }} />
-                        <span className="font-bold text-neutral-800">{player.name}</span>
+                  {/* Player List */}
+                  <div className="divide-y-2 divide-neutral-100 bg-white">
+                    {team.players.map((player) => (
+                      <div key={player.id} className="flex items-center justify-between px-4 py-3">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: team.color }} />
+                          <span className="font-bold text-neutral-800">{player.name}</span>
+                        </div>
+                        <button
+                          onClick={() => removePlayer(teamIdx, player.id)}
+                          className="text-neutral-400 hover:text-red-500 p-1 rounded-full hover:bg-neutral-100 transition-all cursor-pointer"
+                        >
+                          <X className="w-4 h-4 stroke-[3]" />
+                        </button>
                       </div>
+                    ))}
+
+                    {team.players.length === 0 && (
+                      <div className="px-4 py-4 text-center text-sm font-bold text-neutral-400 select-none">
+                        Nenhum jogador adicionado
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Add player box */}
+                  <div className="p-3 border-t-2 border-neutral-950 bg-[#FFFCF0] flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Adicionar jogador"
+                      value={newPlayerNames[teamIdx] || ''}
+                      onChange={(e) =>
+                        setNewPlayerNames((prev) => {
+                          const next = [...prev];
+                          next[teamIdx] = e.target.value;
+                          return next;
+                        })
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') addPlayer(teamIdx);
+                      }}
+                      className="flex-1 px-4 py-2 border-2 border-neutral-950 rounded bg-white text-neutral-950 font-bold focus:outline-none"
+                    />
+                    <div className="relative">
+                      <div className="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-neutral-950 rounded" />
                       <button
-                        onClick={() => removePlayer(teamIdx, player.id)}
-                        className="text-neutral-400 hover:text-red-500 p-1 rounded-full hover:bg-neutral-100 transition-all cursor-pointer"
+                        onClick={() => addPlayer(teamIdx)}
+                        className="relative w-10 h-10 flex items-center justify-center text-white border-2 border-neutral-950 rounded hover:opacity-90 active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+                        style={{ backgroundColor: team.color }}
                       >
-                        <X className="w-4 h-4 stroke-[3]" />
+                        <Plus className="w-6 h-6 stroke-[3]" />
                       </button>
                     </div>
-                  ))}
-
-                  {team.players.length === 0 && (
-                    <div className="px-4 py-4 text-center text-sm font-bold text-neutral-400 select-none">
-                      Nenhum jogador adicionado
-                    </div>
-                  )}
-                </div>
-
-                {/* Add player box */}
-                <div className="p-3 border-t-2 border-neutral-950 bg-[#FFFCF0] flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Adicionar jogador"
-                    value={newPlayerNames[teamIdx]}
-                    onChange={(e) =>
-                      setNewPlayerNames((prev) => prev.map((n, i) => (i === teamIdx ? e.target.value : n)))
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') addPlayer(teamIdx);
-                    }}
-                    className="flex-1 px-4 py-2 border-2 border-neutral-950 rounded bg-white text-neutral-950 font-bold focus:outline-none"
-                  />
-                  <div className="relative">
-                    <div className="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-neutral-950 rounded" />
-                    <button
-                      onClick={() => addPlayer(teamIdx)}
-                      className="relative w-10 h-10 flex items-center justify-center text-white border-2 border-neutral-950 rounded hover:opacity-90 active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
-                      style={{ backgroundColor: team.color }}
-                    >
-                      <Plus className="w-6 h-6 stroke-[3]" />
-                    </button>
                   </div>
                 </div>
               </div>
+            ))}
+            
+            {/* Add New Team Button */}
+            <div className="relative w-full pt-2">
+              <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-neutral-950 rounded" />
+              <button
+                onClick={() => {
+                  if (teams.length >= TEAM_COLORS.length) {
+                    alert('Número máximo de times atingido!');
+                    return;
+                  }
+                  const newTeamId = generateId();
+                  const newColor = TEAM_COLORS[teams.length];
+                  setTeams(prev => [...prev, {
+                    id: newTeamId,
+                    name: `Time ${teams.length + 1}`,
+                    color: newColor,
+                    players: [],
+                    score: 0,
+                  }]);
+                  setNewPlayerNames(prev => [...prev, '']);
+                }}
+                className="relative w-full py-4 bg-white hover:bg-neutral-50 border-4 border-dashed border-neutral-950 rounded font-black text-sm text-neutral-950 text-center cursor-pointer transition-all uppercase tracking-widest"
+              >
+                + Adicionar Time
+              </button>
             </div>
-          ))}
+          </>
+        )}
 
         {/* TAB 2: REGRAS */}
         {activeTab === 'regras' && (
@@ -460,10 +487,9 @@ export function SetupScreen({ onNavigate }: SetupScreenProps) {
                   <div className="absolute inset-0 translate-x-1 translate-y-1 bg-neutral-950 rounded" />
                   <button
                     onClick={() => toggleCategory(catKey)}
-                    className={`relative w-full flex items-center justify-between p-4 bg-white border-2 border-neutral-950 rounded text-left cursor-pointer transition-all ${
-                      isSelected ? 'ring-2 ring-violet-600' : ''
+                    className={`relative w-full flex items-center justify-between p-4 border-2 border-neutral-950 rounded text-left cursor-pointer transition-all ${
+                      isSelected ? 'bg-neutral-100 ring-2 ring-violet-600' : 'bg-white hover:bg-neutral-50'
                     }`}
-                    style={{ backgroundColor: isSelected ? `${info.color}10` : '#ffffff' }}
                   >
                     <div className="flex items-center gap-4">
                       {/* Color square / icon wrapper */}
